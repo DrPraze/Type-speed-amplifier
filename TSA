@@ -1,0 +1,268 @@
+import os
+import tkinter as tk
+from tkinter import *
+from tkinter import ttk
+from tkinter.messagebox import *
+
+root = Tk()
+class MENU(tk.Button):
+    def __init__(self, master, **kw):
+        root.title("Typetastic 1.0")
+        root.geometry('600x500')
+        root.resizable(False, False)
+        root.configure(bg = "Green")
+        
+        #hover buttons
+        tk.Button.__init__(self, master = master, **kw)
+        self.defaultBackground = self["background"]
+        self.bind("<Enter>", self.on_enter)
+        self.bind("<Leave>", self.on_leave)
+    
+    def on_enter(self, e): self['background'] = self['activebackground']
+    
+    def on_leave(self, e): self['background'] = self.defaultBackground
+
+class Notepad:
+
+    root = Tk()
+    #--default window width and height--
+    the_width = 300
+    the_height = 500
+    textArea = Text(root, bg = "White", foreground = "Black")
+    menuBar = Menu(root)
+    FileMenu = Menu(menuBar, tearoff = 0)
+    EditMenu = Menu(menuBar, tearoff = 0)
+    HelpMenu = Menu(menuBar, tearoff = 0)
+    SetMenu = Menu(menuBar, tearoff = 0)
+
+    #--add scroll bar--
+    scr = Scrollbar(textArea)
+    file = None
+
+    def __init__(self, **kwargs):
+
+        #-set icon-
+        try:
+            self.root.wm_iconbitmap("Notepad.ico")
+        except:
+            pass
+
+        #-set windows size-
+
+        try:
+            self.the_width = kwargs['width']
+        except KeyError : 
+            pass
+
+        #--set windows text--
+        self.root.title ("Untitled - Notebook")
+
+        #-centre window-
+        screenWidth = self.root.winfo_screenwidth()
+        screenHeight = self.root.winfo_screenheight()
+
+        #-For left-align-
+        left = (screenWidth / 2) - (self.the_width / 2)
+        
+        #-For right align-
+        top = (screenHeight / 2) - (self.the_height / 2)
+
+        #-For top and bottom-
+        self.root.geometry('%dx%d+%d+%d'  %  (self.the_width,
+                                              self.the_height,
+                                              left, top))
+        #-make textarea resizable-
+        self.root.grid_rowconfigure(0, weight = 1)
+        self.root.grid_columnconfigure(0, weight = 1)
+
+        #-add controls (widget)-
+        self.textArea.grid(sticky = N + E + S + W)
+
+        #-open new file-
+        self.FileMenu.add_command ( label = "New", command = self.newFile)
+
+        #-open already existing file-
+        self.FileMenu.add_command ( label = "Open", command = self.openFile)
+
+        #-save current file-
+        self.FileMenu.add_command(label = "Save", command = self.saveFile)
+
+        #-create line in the dialog-
+        self.FileMenu.add_command (label = "Exit", command = self.quitApplication)
+
+        #-cut-
+        self.EditMenu.add_command (label = "Cut", command = self.cut)
+
+        #-copy-
+        self.EditMenu.add_command ( label = "Copy", command = self.copy)
+          
+        #-about-
+        self.HelpMenu.add_command (label = "About ", command = self.ShowAbout)
+
+        #--paste--
+        self.EditMenu.add_command (label = "Paste", command = self.paste)
+        
+         #-Filing-
+        self.menuBar.add_cascade ( label = "File", menu = self.FileMenu)
+        #Editing
+        self.menuBar.add_cascade ( label = "Edit", menu = self.EditMenu)
+      
+        self.menuBar.add_cascade(label = "Help", menu = self.HelpMenu)
+                                 
+        self.root.config ( menu = self.menuBar)
+
+        self.scr.pack ( side = RIGHT,fill = Y)
+
+        #Scrollbar will adjust automatically
+        self.scr.config(command = self.textArea.yview)
+        self.textArea.config(yscrollcommand = self.scr.set)
+
+    def quitApplication(self):
+        self.root.destroy()
+        #exit
+
+    def ShowAbout(self):
+        showinfo ("Notebook", "made by Praise James, the same developer :) ")
+
+    def openFile(self):
+
+        self.file = askopenfilename(defaultextension = " .txt", filetypes = [("All Files", "*.*"), ("Text Documents" , "*.txt") ])
+        if self.file == " ":
+
+            #no file to open
+            self.file = None
+        else:
+            
+            #Try to open the file
+            #set the window title
+            self.root.title (os.path.basename(self.file) + " - Notebook")
+            self.textArea.delete(1.0, END)
+
+            try:
+                file = open(self.file, "r")
+                               
+                self.textArea.insert(1.0, file.read())
+                file.close()
+
+            except FileNotFoundError:
+                showinfo ("ALERT", "Hey, you didn't open a file")
+ 
+    def newFile(self):
+        self.root.title("Untitled - Notebook")
+        self.file = None
+        self.textArea.delete(1.0, END)
+        
+
+    def saveFile(self):
+
+        if self.file == None:
+            #save as new file
+            self.file = asksaveasfilename (initialfile = 'Untitled.txt',
+                                           defaultextension = " .txt",
+                                           filetypes = [("All Files", "*.*"),
+                                                        ("Text Documents", "* .txt")])
+
+            if self.file == " ":
+                self.file == None
+            else:
+                #try
+                file = open(self.file, "w+")
+                file.write(self.textArea.get(1.0, END))
+                file.close()
+
+                #Change the windows  title
+                self.root.title(os.path.basename(self.file) + " - Notebook")
+        else:
+            file = open(self.file, "w+")
+            file.write(self.textArea.get(1.0, END))
+            file.close()
+    
+    def  cut(self):
+        try:
+            self.textArea.event.generate("<<Cut>>")
+        except AttributeError:
+            showinfo("HEY",  "Nothing to cut")
+            
+
+    def copy(self):
+        try:
+            self.textArea.event.generate("<<Copy>>")
+        except AttributeError:
+            showinfo("HEY", "you haven't written anything")
+
+    def paste(self):
+        try:
+            self.textArea.event.generate("<<Paste>>")
+        except AttributeError:
+            showinfo("HEY", "You've got nothing to paste")
+        
+    def run (self):
+        #Run the main application
+        self.root.mainloop()          
+    
+#Run main application
+#notepad = Notepad(width = 600, height = 400)
+#notepad.run()
+
+def ShowAbout():
+    showinfo("Typetastic1.0", "This program is written by Praise James, solely for the purpose of coding practice\n it was done to improve typing speed for the users\n even though it isn't as efficient as mavis bacon teaches typing\n Not all the recources that are used in this programme was made by the devveloper\n in this accord the developer would like to give credit to http://wallpaperscraft.com/ for the background\n images used herein :)")
+
+def quitApp(): root.destroy()#exit
+
+#set background image
+#filename = 'images/road.png'
+canvas = tk.Canvas(root, width = 600, height = 500)
+canvas.pack()
+#tk_img = PhotoImage(file = filename)
+#canvas.create_image(250, 150, image = tk_img)
+
+#buttons with hover effects
+btn1 = MENU(root, text = "1min\n (80 Words)",width = 10, height = 0, font = ('helvetica', 15, 'bold', 'underline', 'italic'), bg = 'green', foreground = 'aliceblue', activebackground = 'gold',
+            highlightbackground = "#bce8f1", highlightthickness = 0.5, relief = tk.SOLID, borderwidth = "2", command = None)
+btn1win = canvas.create_window(90, 51, anchor = 'nw', window = btn1)
+
+btn2 = MENU(root, text = "3mins\n (240 Words)",width = 10, height = 0, font = ('helvetica', 15, 'bold', 'underline', 'italic'), bg = 'green', foreground = 'aliceblue', activebackground = 'gold',
+            highlightbackground = "#bce8f1", highlightthickness = 0.5, relief = tk.SOLID, borderwidth = "2", command = None)
+btn2win = canvas.create_window(250, 51, anchor = 'nw', window = btn2)
+
+btn3 = MENU(root, text = "5mins\n (400 Words)",width = 10, height = 0, font = ('helvetica', 15, 'bold', 'underline', 'italic'), bg = 'green', foreground = 'aliceblue', activebackground = 'gold',
+            highlightbackground = "#bce8f1", highlightthickness = 0.5, relief = tk.SOLID, borderwidth = "2", command = None)
+btn3win = canvas.create_window(410, 51, anchor = 'nw', window = btn3)
+
+btn4 = MENU(root, text = "10min\n (800 Words)",width = 10, height = 0, font = ('helvetica', 15, 'bold', 'underline', 'italic'), bg = 'green', foreground = 'aliceblue', activebackground = 'gold',
+            highlightbackground = "#bce8f1", highlightthickness = 0.5, relief = tk.SOLID, borderwidth = "2", command = None)
+btn4win = canvas.create_window(90, 141, anchor = 'nw', window = btn4)
+
+btn5 = MENU(root, text = "15min\n (1.2k Words)",width = 10, height = 0, font = ('helvetica', 15, 'bold', 'underline', 'italic'), bg = 'green', foreground = 'aliceblue', activebackground = 'gold',
+            highlightbackground = "#bce8f1", highlightthickness = 0.5, relief = tk.SOLID, borderwidth = "2", command = None)
+btn5win = canvas.create_window(250, 141, anchor = 'nw', window = btn5)
+
+btn6 = MENU(root, text = "30min\n (2.4k Words)",width = 10, height = 0, font = ('helvetica', 15, 'bold', 'underline', 'italic'), bg = 'green', foreground = 'aliceblue', activebackground = 'gold',
+            highlightbackground = "#bce8f1", highlightthickness = 0.5, relief = tk.SOLID, borderwidth = "2", command = None)
+btn6win = canvas.create_window(410, 141, anchor = 'nw', window = btn6)
+
+btn7 = MENU(root, text = "NOTEBOOK",width = 10, height = 0, font = ('helvetica', 15, 'bold', 'underline', 'italic'), bg = 'green', foreground = 'aliceblue', activebackground = 'gold',
+            highlightbackground = "#bce8f1", highlightthickness = 0.5, relief = tk.SOLID, borderwidth = "2", command = Notepad)
+btn7win = canvas.create_window(90, 231, anchor = 'nw', window = btn7)
+
+btn8 = MENU(root, text = "CHALLENGE",width = 10, height = 0, font = ('helvetica', 15, 'bold', 'underline', 'italic'), bg = 'green', foreground = 'aliceblue', activebackground = 'gold',
+            highlightbackground = "#bce8f1", highlightthickness = 0.5, relief = tk.SOLID, borderwidth = "2", command = None)
+btn8win = canvas.create_window(250, 231, anchor = 'nw', window = btn8)
+
+btn9 = MENU(root, text = "CUSTOM +",width = 10, height = 0, font = ('helvetica', 15, 'bold', 'underline', 'italic'), bg = 'green', foreground = 'aliceblue', activebackground = 'gold',
+            highlightbackground = "#bce8f1", highlightthickness = 0.5, relief = tk.SOLID, borderwidth = "2", command = None)
+btn9win = canvas.create_window(410, 231, anchor = 'nw', window = btn9)
+
+btn10 = MENU(root, text = "CREATE A TUTORIAL",width = 35, height = 0, font = ('helvetica', 15, 'bold', 'underline', 'italic'), bg = 'green', foreground = 'aliceblue', activebackground = 'gold',
+            highlightbackground = "#bce8f1", highlightthickness = 0.5, relief = tk.SOLID, borderwidth = "2", command = None)
+btn10win = canvas.create_window(90, 361, anchor = 'nw', window = btn10)
+
+btn11 = MENU(root, text = "ABOUT AND CREDITS",width = 35, height = 0, font = ('helvetica', 15, 'bold', 'underline', 'italic'), bg = 'green', foreground = 'aliceblue', activebackground = 'gold',
+            highlightbackground = "#bce8f1", highlightthickness = 0.5, relief = tk.SOLID, borderwidth = "2", command = ShowAbout)
+btn11win = canvas.create_window(90, 404, anchor = 'nw', window = btn11)
+
+btn12 = MENU(root, text = "QUIT !",width = 35, height = 0, font = ('helvetica', 15, 'bold', 'underline', 'italic'), bg = 'green',foreground = 'aliceblue', activebackground = 'gold',
+            highlightbackground = "#bce8f1", highlightthickness = 0.5, relief = tk.SOLID, borderwidth = "2", command = quitApp)
+btn12win = canvas.create_window(90, 447, anchor = 'nw', window = btn12)
+
+root.mainloop()
