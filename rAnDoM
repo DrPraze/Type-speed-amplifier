@@ -1,0 +1,80 @@
+import random
+import tkinter as tk
+import datetime
+
+
+class Countdown(tk.Frame):
+    """count down for typing practise"""
+    def __init__(self, master):
+        super().__init__(master)
+        self.initialize()
+        self.time()
+        self.seconds_left = 0
+        self._timer_on = False
+        #self.start()
+
+    def time(self): self.label.pack()
+
+    def initialize(self):
+        self.label = tk.Label(self, text="00:00:00", bg = 'green', font = ("Helvetica", 15))
+        self.begin = self.start
+
+    def countdown(self):
+        '''Update label based on the time left.'''
+        self.label['text'] = self.convert_remainder()
+
+        if self.seconds_left:
+            self.seconds_left -= 1
+            self._timer_on = self.after(1000, self.countdown)
+        else:
+            self._timer_on = False
+
+    def start(self):
+        '''Start counting down'''
+        self.rand = random.randint(18, 9000)
+        self.seconds_left = int(self.rand)   # seconds
+        self.stop() 
+        self.countdown()    
+    
+    def stop(self):
+        '''Stops after schedule from executing.'''
+        if self._timer_on:
+            self.after_cancel(self._timer_on)
+            self._timer_on = False
+
+    def convert_remainder(self): return datetime.timedelta(seconds=self.seconds_left)
+
+def charcount(*args):
+    output.delete(0.0, "end")
+    words = entry.get(0.0, "end")
+    c = len(words.replace(' ', ''))-1
+
+    output.insert(tk.INSERT, c)
+
+def count():
+    charcount()
+    entry.bind('<KeyRelease>', charcount)
+
+
+def run():
+    global output
+    global entry
+    root = tk.Tk()
+    root.title("TSA 1.0")
+    root.geometry('500x600')
+    root.resizable (False, False)
+
+    label = tk.Label(root, text = "TYPE YOUR BEST, goodluck").pack()
+
+    entry = tk.Text(root, width = 450, height = 10, font = ("Helvetica", 16), wrap = "word")
+    entry.focus_set()   
+    entry.pack()
+    output = tk.Text(root, width = 10, height = 2, font = ('Helvetica', 16), wrap = 'word')
+    output.pack()
+    countdown = Countdown(root)
+    countdown.pack()
+    button = tk.Button(root, text = "START", command = lambda:[countdown.start(), count()]).pack()
+    root.mainloop()
+    
+if __name__=='__main__':
+    run()
