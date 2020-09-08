@@ -1,9 +1,9 @@
 import random
-import tkinter as tk
+from tkinter import *
 import datetime
 
 
-class Countdown(tk.Frame):
+class Countdown(Frame):
     """count down for typing practise"""
     def __init__(self, master):
         super().__init__(master)
@@ -11,12 +11,13 @@ class Countdown(tk.Frame):
         self.time()
         self.seconds_left = 0
         self._timer_on = False
+        
         #self.start()
 
     def time(self): self.label.pack()
 
     def initialize(self):
-        self.label = tk.Label(self, text="00:00:00", bg = 'green', font = ("Helvetica", 15))
+        self.label = Label(self, text="00:00:00", bg = 'green', font = ("Helvetica", 15))
         self.begin = self.start
 
     def countdown(self):
@@ -29,27 +30,36 @@ class Countdown(tk.Frame):
         else:
             self._timer_on = False
 
-    def start(self):
+    def start(self, button, entry):
         '''Start counting down'''
-        self.rand = random.randint(18, 9000)
+        self.rand = random.randint(30, 300)
         self.seconds_left = int(self.rand)   # seconds
-        self.stop() 
-        self.countdown()    
+        self.countdown()
+        entry.config(state=NORMAL)
+        button.config(command=lambda: [self.stop(button, entry)], text='PAUSE')
     
-    def stop(self):
+    def stop(self, button, entry):
         '''Stops after schedule from executing.'''
         if self._timer_on:
             self.after_cancel(self._timer_on)
+            entry.config(state=DISABLED)
+            button.config(command=lambda: [self.continue_(button, entry)], text='CONTINUE')
             self._timer_on = False
 
     def convert_remainder(self): return datetime.timedelta(seconds=self.seconds_left)
 
+    def continue_(self, button, entry):
+        self.countdown()
+        entry.config(state=NORMAL)
+        button.config(command=lambda: [self.stop(button, entry)], text='PAUSE')
+
 def charcount(*args):
+    output.config(state=NORMAL)
     output.delete(0.0, "end")
     words = entry.get(0.0, "end")
     c = len(words.replace(' ', ''))-1
-
-    output.insert(tk.INSERT, c)
+    output.insert(INSERT, c)
+    output.config(state=DISABLED)
 
 def count():
     charcount()
@@ -59,21 +69,23 @@ def count():
 def run():
     global output
     global entry
-    root = tk.Tk()
+    root = Tk()
     root.title("TSA 1.0")
     root.geometry('500x600')
     root.resizable (False, False)
 
-    label = tk.Label(root, text = "TYPE YOUR BEST, goodluck").pack()
+    label = Label(root, text = "TYPE YOUR BEST, goodluck").pack()
 
-    entry = tk.Text(root, width = 450, height = 10, font = ("Helvetica", 16), wrap = "word")
+    entry = Text(root, width = 450, height = 10, font = ("Helvetica", 16), wrap = "word", state=DISABLED)
     entry.focus_set()   
     entry.pack()
-    output = tk.Text(root, width = 10, height = 2, font = ('Helvetica', 16), wrap = 'word')
+    output = Text(root, width = 10, height = 2, font = ('Helvetica', 16), wrap = 'word', state=DISABLED)
     output.pack()
     countdown = Countdown(root)
     countdown.pack()
-    button = tk.Button(root, text = "START", command = lambda:[countdown.start(), count()]).pack()
+    button = Button(root, text = "START")
+    button.pack()
+    button.config(command = lambda:[countdown.start(button, entry), count()])
     root.mainloop()
     
 if __name__=='__main__':
