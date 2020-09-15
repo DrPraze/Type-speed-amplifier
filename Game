@@ -1,0 +1,348 @@
+import sys
+import pygame
+from pygame.locals import *
+
+
+class GAME:
+    """typing game class"""#it's not actually a game but... just to keep the project beautiful
+
+    def __init__(self):
+        pygame.init()
+        #pygame.font.SysFont()
+        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        self.font = pygame.font.SysFont('Times New Roman', 35)
+        pygame.display.set_caption("TSA 1.0/typing game")
+        self.screen.fill((0, 0, 255))
+        self.motherboard()
+        self.board_text()
+
+    def motherboard(self):
+        global SILVER, GREY, WHITE, BLACK, BLUE, GREEN, RED, DARK_GREEN
+        SILVER = (192, 192, 192)
+        GREY = (109, 109, 109)
+        WHITE = (255, 255, 255)
+        BLACK = (0, 0, 0)
+        BLUE = (0, 0, 255)
+        GREEN = (0, 255, 0)
+        RED = (0, 255, 0)
+        DARK_GREEN = (0, 100, 0)
+        self.keyA = pygame.draw.rect(self.screen, GREY, (
+            #x placement coordinate
+            120,
+            #y placement coordinate
+            450,
+            #x sizing coordinate
+            60,
+            #y sizing coordinate
+            60))
+        self.keyAb = pygame.draw.rect(self.screen, WHITE, (122, 450, 51, 53))
+        self.key1 = pygame.draw.rect(self.screen, GREY, (74, 318, 60, 60))
+        self.key1b = pygame.draw.rect(self.screen, WHITE, (76, 318, 51, 53))
+        self.key2 = pygame.draw.rect(self.screen, GREY, (140, 318, 60, 60))
+        self.key2b = pygame.draw.rect(self.screen, WHITE, (142, 318, 51, 53))
+        self.key3 = pygame.draw.rect(self.screen, GREY, (206, 318, 60, 60))
+        self.key3b = pygame.draw.rect(self.screen, WHITE, (208, 318, 51, 53))
+        self.key4 = pygame.draw.rect(self.screen, GREY, (272, 318, 60, 60))
+        self.key4b = pygame.draw.rect(self.screen, WHITE, (274, 318, 51, 53))
+        self.key5 = pygame.draw.rect(self.screen, GREY, (338, 318, 60, 60))
+        self.key5b = pygame.draw.rect(self.screen, WHITE, (340, 318, 51, 53))
+        self.key6 = pygame.draw.rect(self.screen, GREY, (404, 318, 60, 60))
+        self.key6b = pygame.draw.rect(self.screen, WHITE, (406, 318, 51, 53))
+        self.key7 = pygame.draw.rect(self.screen, GREY, (470, 318, 60, 60))
+        self.key7b = pygame.draw.rect(self.screen, WHITE, (472, 318, 51, 53))
+        self.key8 = pygame.draw.rect(self.screen, GREY, (536, 318, 60, 60))
+        self.key8b = pygame.draw.rect(self.screen, WHITE, (538, 318, 51, 53))
+        self.key9 = pygame.draw.rect(self.screen, GREY, (602, 318, 60, 60))
+        self.key9b = pygame.draw.rect(self.screen, WHITE, (604, 318, 51, 53))
+        self.key0 = pygame.draw.rect(self.screen, GREY, (668, 318, 60, 60))
+        self.key0b = pygame.draw.rect(self.screen, WHITE, (670, 318, 51, 53))
+        self.key_ = pygame.draw.rect(self.screen, GREY, (734, 318, 60, 60))
+        self.key_b = pygame.draw.rect(self.screen, WHITE, (736, 318, 51, 53))
+        self.keyPlus = pygame.draw.rect(self.screen, GREY, (800, 318, 60, 60))
+        self.keyPlusb = pygame.draw.rect(self.screen, WHITE, (802, 318, 51, 53))
+        self.keyQ = pygame.draw.rect(self.screen, GREY, (93, 384, 60, 60))
+        self.keyQb = pygame.draw.rect(self.screen, WHITE, (95, 384, 51, 53))
+        self.keyW = pygame.draw.rect(self.screen, GREY, (159, 384, 60, 60))
+        self.keyWb = pygame.draw.rect(self.screen, WHITE, (161, 384, 51, 53))
+        self.keyE = pygame.draw.rect(self.screen, GREY, (225, 384, 60, 60))
+        self.keyEb = pygame.draw.rect(self.screen, WHITE, (227, 384, 51, 53))
+        self.keyR = pygame.draw.rect(self.screen, GREY, (291, 384, 60, 60))
+        self.keyRb = pygame.draw.rect(self.screen, WHITE, (293, 384, 51, 53))
+        self.keyT = pygame.draw.rect(self.screen, GREY, (357, 384, 60, 60))
+        self.keyTb = pygame.draw.rect(self.screen, WHITE, (359, 384, 51, 53))
+        self.keyY = pygame.draw.rect(self.screen, GREY, (423, 384, 60, 60))
+        self.keyYb = pygame.draw.rect(self.screen, WHITE, (425, 384, 51, 53))
+        self.keyU = pygame.draw.rect(self.screen, GREY, (489, 384, 60, 60))
+        self.keyUb = pygame.draw.rect(self.screen, WHITE, (491, 384, 51, 53))
+        self.keyI = pygame.draw.rect(self.screen, GREY, (555, 384, 60, 60))
+        self.keyIb = pygame.draw.rect(self.screen, WHITE, (557, 384, 51, 53))
+        self.keyO = pygame.draw.rect(self.screen, GREY, (621, 384, 60, 60))
+        self.keyOb = pygame.draw.rect(self.screen, WHITE, (623, 384, 51, 53))
+        self.keyP = pygame.draw.rect(self.screen, GREY, (687, 384, 60, 60))
+        self.keyPb = pygame.draw.rect(self.screen, WHITE, (689, 384, 51, 53))
+        self.keybrac = pygame.draw.rect(self.screen, GREY, (753, 384, 60, 60))
+        self.keybracb = pygame.draw.rect(self.screen, WHITE, (755, 384, 51, 53))
+        self.keybrac2 = pygame.draw.rect(self.screen, GREY, (819, 384, 60, 60))
+        self.keybrac2b = pygame.draw.rect(self.screen, WHITE, (821, 384, 51, 53))
+
+        self.keyS = pygame.draw.rect(self.screen, GREY, (186, 450, 60, 60))
+        self.keySb = pygame.draw.rect(self.screen, WHITE, (188, 450, 51, 53))
+        self.keyD = pygame.draw.rect(self.screen, GREY, (252, 450, 60, 60))
+        self.keyDb = pygame.draw.rect(self.screen, WHITE, (254, 450, 51, 53))
+        self.keyF = pygame.draw.rect(self.screen, GREY, (318, 450, 60, 60))
+        self.keyFb = pygame.draw.rect(self.screen, WHITE, (320, 450, 51, 53))
+        self.keyG = pygame.draw.rect(self.screen, GREY, (384, 450, 60, 60))
+        self.keyGb = pygame.draw.rect(self.screen, WHITE, (386, 450, 51, 53))
+        self.keyH = pygame.draw.rect(self.screen, GREY, (450, 450, 60, 60))
+        self.keyHb = pygame.draw.rect(self.screen, WHITE, (452, 450, 51, 53))
+        self.keyJ = pygame.draw.rect(self.screen, GREY, (516, 450, 60, 60))
+        self.keyJb = pygame.draw.rect(self.screen, WHITE, (518, 450, 51, 53))
+        self.keyK = pygame.draw.rect(self.screen, GREY, (582, 450, 60, 60))
+        self.keyKb = pygame.draw.rect(self.screen, WHITE, (584, 450, 51, 53))
+        self.keyL = pygame.draw.rect(self.screen, GREY, (648, 450, 60, 60))
+        self.keyLb = pygame.draw.rect(self.screen, WHITE, (650, 450, 51, 53))
+        self.keyColon = pygame.draw.rect(self.screen, GREY, (714, 450, 60, 60))
+        self.keyColonb = pygame.draw.rect(self.screen, WHITE, (716, 450, 51, 53))
+        self.keyQuote= pygame.draw.rect(self.screen, GREY, (780, 450, 60, 60))
+        self.keyQuoteb = pygame.draw.rect(self.screen, WHITE, (782, 450, 51, 53))
+        self.keyBslash = pygame.draw.rect(self.screen, GREY, (846, 450, 60, 60))
+        self.keyBslashb = pygame.draw.rect(self.screen, WHITE, (848, 450, 51, 53))
+
+        self.keyZ = pygame.draw.rect(self.screen, GREY, (158, 516, 60, 60))
+        self.keyZb = pygame.draw.rect(self.screen, WHITE, (160, 516, 51, 53))
+        self.keyX = pygame.draw.rect(self.screen, GREY, (224, 516, 60, 60))
+        self.keyXb = pygame.draw.rect(self.screen, WHITE, (226, 516, 51, 53))
+        self.keyC = pygame.draw.rect(self.screen, GREY, (290, 516, 60, 60))
+        self.keyCb = pygame.draw.rect(self.screen, WHITE, (292, 516, 51, 53))
+        self.keyV = pygame.draw.rect(self.screen, GREY, (356, 516, 60, 60))
+        self.keyVb = pygame.draw.rect(self.screen, WHITE, (358, 516, 51, 53))
+        self.keyB = pygame.draw.rect(self.screen, GREY, (422, 516, 60, 60))
+        self.keyBb = pygame.draw.rect(self.screen, WHITE, (424, 516, 51, 53))
+        self.keyN = pygame.draw.rect(self.screen, GREY, (488, 516, 60, 60))
+        self.keyNb = pygame.draw.rect(self.screen, WHITE, (490, 516, 51, 53))
+        self.keyM = pygame.draw.rect(self.screen,  GREY, (554, 516, 60, 60))
+        self.keyMb = pygame.draw.rect(self.screen, WHITE, (556, 516, 51, 53))
+        self.keyComma = pygame.draw.rect(self.screen, GREY, (620, 516, 60, 60))
+        self.keyCommab = pygame.draw.rect(self.screen, WHITE, (622, 516, 51, 53))
+        self.keyDot = pygame.draw.rect(self.screen, GREY, (686, 516, 60, 60))
+        self.keyDotb = pygame.draw.rect(self.screen, WHITE, (688, 516, 51, 53))
+        self.keyFslash = pygame.draw.rect(self.screen,  GREY, (752, 516, 60, 60))
+        self.keyFlashb = pygame.draw.rect(self.screen, WHITE, (754, 516, 51, 53))
+        self.Rshift = pygame.draw.rect(self.screen,  GREY, (820, 516, 160, 60))
+        self.keyRshiftb = pygame.draw.rect(self.screen, WHITE, (824, 516, 151, 53))
+        
+        self.keyAlt = pygame.draw.rect(self.screen, GREY, (250, 582, 60, 60))
+        self.keyAltb = pygame.draw.rect(self.screen, WHITE, (252, 582, 51, 53))
+        self.keySpace = pygame.draw.rect(self.screen, GREY, (320, 582, 300, 60))
+        self.keySpaceb = pygame.draw.rect(self.screen, WHITE, (322, 582, 291, 53))
+        self.keyRalt = pygame.draw.rect(self.screen, GREY, (629, 582, 60, 60))
+        self.keyRaltb = pygame.draw.rect(self.screen, WHITE, (631, 582, 51, 53))
+        self.keyRctrl = pygame.draw.rect(self.screen, GREY, (699, 582, 70, 60))
+        self.keyRctrlb = pygame.draw.rect(self.screen, WHITE, (701, 582, 61, 53))
+
+        pygame.display.update()
+
+    def board_text(self):
+        self.screen.blit(self.font.render('1', True, BLACK), (96, 335))
+        self.screen.blit(self.font.render('!', True, BLACK), (80, 313))
+        self.screen.blit(self.font.render('2', True, BLACK), (172, 335))
+        self.screen.blit(self.font.render('@', True, BLACK), (148, 313))
+        self.screen.blit(self.font.render('3', True, BLACK), (228, 335))
+        self.screen.blit(self.font.render('#', True, BLACK), (214, 313))
+        self.screen.blit(self.font.render('4', True, BLACK), (294, 335))
+        self.screen.blit(self.font.render('$', True, BLACK), (280, 313))
+        self.screen.blit(self.font.render('5', True, BLACK), (368, 335))
+        self.screen.blit(self.font.render('%', True, BLACK), (344, 313))
+        self.screen.blit(self.font.render('6', True, BLACK),  (426, 335))
+        self.screen.blit(self.font.render('^', True, BLACK), (406, 313))
+        self.screen.blit(self.font.render('7', True, BLACK), (497, 335))
+        self.screen.blit(self.font.render('&', True, BLACK), (476, 313))
+        self.screen.blit(self.font.render('8', True, BLACK), (559, 335))
+        self.screen.blit(self.font.render('*', True, BLACK), (541, 313))
+        self.screen.blit(self.font.render('9', True, BLACK), (625, 335))
+        self.screen.blit(self.font.render('(', True, BLACK), (606, 313))
+        self.screen.blit(self.font.render('0', True, BLACK), (698, 335))
+        self.screen.blit(self.font.render(')', True, BLACK), (673, 313))
+        self.screen.blit(self.font.render('-', True, BLACK), (770, 335))
+        self.screen.blit(self.font.render('_', True, BLACK), (740, 310))
+        self.screen.blit(self.font.render('=', True, BLACK), (823, 335))
+        self.screen.blit(self.font.render('+', True, BLACK), (811, 313))
+        self.screen.blit(self.font.render('Q', True, BLACK), (110, 390))
+        self.screen.blit(self.font.render('W', True, BLACK), (170, 390))
+        self.screen.blit(self.font.render('E', True, BLACK), (240, 390))
+        self.screen.blit(self.font.render('R', True, BLACK), (310, 390))
+        self.screen.blit(self.font.render('T', True, BLACK), (370, 390))
+        self.screen.blit(self.font.render('Y', True, BLACK), (428, 390))
+        self.screen.blit(self.font.render('U', True, BLACK), (497, 390))
+        self.screen.blit(self.font.render('I', True, BLACK), (570, 390))
+        self.screen.blit(self.font.render('O', True, BLACK), (630, 390))
+        self.screen.blit(self.font.render('P', True, BLACK), (700, 390))
+        self.screen.blit(self.font.render('[', True, BLACK), (783, 391))
+        self.screen.blit(self.font.render('{', True, BLACK), (755, 380))
+        self.screen.blit(self.font.render(']', True, BLACK), (830, 391))
+        self.screen.blit(self.font.render('}', True, BLACK), (857, 380))
+        self.screen.blit(self.font.render('A', True, BLACK), (125, 455))
+        self.screen.blit(self.font.render('S', True, BLACK), (195, 455))
+        self.screen.blit(self.font.render('D', True, BLACK), (260, 455))
+        self.screen.blit(self.font.render('F', True, BLACK), (338, 455))
+        self.screen.blit(self.font.render('G', True, BLACK), (400, 455))
+        self.screen.blit(self.font.render('H', True, BLACK), (469, 455))
+        self.screen.blit(self.font.render('J', True, BLACK), (533, 455))
+        self.screen.blit(self.font.render('K', True, BLACK), (600, 455))
+        self.screen.blit(self.font.render('L', True, BLACK), (670, 455))
+        self.screen.blit(self.font.render(';', True, BLACK), (750, 455))
+        self.screen.blit(self.font.render(':', True, BLACK), (730, 445))
+        self.screen.blit(self.font.render("'", True, BLACK), (810, 455))
+        self.screen.blit(self.font.render('"', True, BLACK), (783, 445))
+        self.screen.blit(self.font.render("\ ", True, BLACK), (878, 455))
+        self.screen.blit(self.font.render('|', True, BLACK), (860, 445))
+        self.screen.blit(self.font.render('Z', True, BLACK), (165, 516))
+        self.screen.blit(self.font.render('X', True, BLACK), (235, 516))
+        self.screen.blit(self.font.render('C', True, BLACK), (300, 516))
+        self.screen.blit(self.font.render('V', True, BLACK), (378, 516))
+        self.screen.blit(self.font.render('B', True, BLACK), (440, 516))
+        self.screen.blit(self.font.render('N', True, BLACK), (500, 516))
+        self.screen.blit(self.font.render('M', True, BLACK), (570, 516))
+        self.screen.blit(self.font.render(',', True, BLACK), (658, 516))
+        self.screen.blit(self.font.render('<', True, BLACK), (630, 514))
+        self.screen.blit(self.font.render('.', True, BLACK), (723, 516))
+        self.screen.blit(self.font.render('>', True, BLACK), (700, 514))
+        self.screen.blit(self.font.render('/', True, BLACK), (788, 516))
+        self.screen.blit(self.font.render('?', True, BLACK), (760, 516))
+        self.screen.blit(self.font.render('SHIFT', True, BLACK), (840, 516))
+        pygame.display.update()
+
+    def run(self):
+        #--event log--
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == K_q:
+                        self.keyQ = pygame.draw.rect(self.screen, GREY, (93, 384, 60, 60))
+                        self.screen.blit(self.font.render('Q', True, BLACK), (110, 390))
+                    if event.key == K_w:
+                        self.keyW = pygame.draw.rect(self.screen, GREY, (159, 384, 60, 60))
+                        self.screen.blit(self.font.render('W', True, BLACK), (170, 390))
+                    if  event.key == K_e:
+                        self.keyE = pygame.draw.rect(self.screen, GREY, (225, 384, 60, 60))
+                        self.screen.blit(self.font.render('E', True, BLACK), (240, 390))
+                    if event.key == K_r:
+                        self.keyR = pygame.draw.rect(self.screen, GREY, (291, 384, 60, 60))
+                        self.screen.blit(self.font.render('R', True, BLACK), (310, 390))
+                    if event.key == K_t:
+                        self.keyT = pygame.draw.rect(self.screen, GREY, (357, 384, 60, 60))
+                        self.screen.blit(self.font.render('T', True, BLACK), (370, 390))
+                    if event.key == K_y:
+                        self.keyY = pygame.draw.rect(self.screen, GREY, (423, 384, 60, 60))
+                        self.screen.blit(self.font.render('Y', True, BLACK), (428, 390))
+                    if event.key == K_u:
+                        self.keyU = pygame.draw.rect(self.screen, GREY, (489, 384, 60, 60))
+                        self.screen.blit(self.font.render('U', True, BLACK), (497, 390))
+                    if event.key == K_i:
+        
+        
+                    if event.key == K_a:
+                        self.keyA = pygame.draw.rect(self.screen, GREY, (120, 450, 60, 60))
+                        self.screen.blit(self.font.render('A', True, BLACK), (125, 455))
+                    if event.key == K_s:
+                        self.keyS = pygame.draw.rect(self.screen, GREY, (186, 450, 60, 60))
+                        self.screen.blit(self.font.render('S', True, BLACK), (195, 455))
+                    if event.key == K_d:
+                        self.keyD = pygame.draw.rect(self.screen, GREY, (252, 450, 60, 60))
+                        self.screen.blit(self.font.render('D', True, BLACK), (260, 455))
+                    if event.key == K_f:
+                        self.keyF = pygame.draw.rect(self.screen, GREY, (318, 450, 60, 60))
+                        self.screen.blit(self.font.render('F', True, BLACK), (338, 455))
+                    if event.key == K_g:
+                        self.keyG = pygame.draw.rect(self.screen, GREY, (384, 450, 60, 60))
+                        self.screen.blit(self.font.render('G', True, BLACK), (400, 455))
+                    if event.key == K_h:
+                        self.keyH = pygame.draw.rect(self.screen, GREY, (450, 450, 60, 60))
+                        self.screen.blit(self.font.render('H', True, BLACK), (469, 455))
+                    if event.key == K_j:
+                        self.keyJ = pygame.draw.rect(self.screen, GREY, (516, 450, 60, 60))
+                        self.screen.blit(self.font.render('J', True, BLACK), (533, 455))
+                    if event.key == K_k:
+                        self.keyK = pygame.draw.rect(self.screen, GREY, (582, 450, 60, 60))
+                        self.screen.blit(self.font.render('K', True, BLACK), (600, 455))
+                    if event.key == K_l:
+                        self.keyL = pygame.draw.rect(self.screen, GREY, (648, 450, 60, 60))
+                        self.screen.blit(self.font.render('L', True, BLACK), (670, 455))
+                if event.type == pygame.KEYUP:
+                    if event.key == K_q:
+                        self.keyQ = pygame.draw.rect(self.screen, GREY, (93, 384, 60, 60))
+                        self.keyQb = pygame.draw.rect(self.screen, WHITE, (95, 384, 51, 53))
+                        self.screen.blit(self.font.render('Q', True, BLACK), (110, 390))
+                    if event.key == K_w:
+                        self.keyW = pygame.draw.rect(self.screen, GREY, (159, 384, 60, 60))
+                        self.keyWb = pygame.draw.rect(self.screen, WHITE, (161, 384, 51, 53))
+                        self.screen.blit(self.font.render('W', True, BLACK), (170, 390))
+                    if event.key == K_e:
+                        self.keyE = pygame.draw.rect(self.screen, GREY, (225, 384, 60, 60))
+                        self.keyEb = pygame.draw.rect(self.screen, WHITE, (227, 384, 51, 53))
+                        self.screen.blit(self.font.render('E', True, BLACK), (240, 390))
+                    if event.key == K_r:
+                        self.keyR = pygame.draw.rect(self.screen, GREY, (291, 384, 60, 60))
+                        self.keyRb = pygame.draw.rect(self.screen, WHITE, (293, 384, 51, 53))
+                        self.screen.blit(self.font.render('R', True, BLACK), (310, 390))
+                    if event.key == K_t:
+                        self.keyT = pygame.draw.rect(self.screen, GREY, (357, 384, 60, 60))
+                        self.screen.blit(self.font.render('T', True, BLACK), (370, 390))
+                    if event.key == K_y:
+                        self.keyY = pygame.draw.rect(self.screen, GREY, (423, 384, 60, 60))
+                        self.keyYb = pygame.draw.rect(self.screen, WHITE, (425, 384, 51, 53))
+                        self.screen.blit(self.font.render('Y', True, BLACK), (428, 390))
+                    if event.key == K_u:
+                        self.keyU = pygame.draw.rect(self.screen, GREY, (489, 384, 60, 60))
+                        self.keyUb = pygame.draw.rect(self.screen, WHITE, (491, 384, 51, 53))
+                        self.screen.blit(self.font.render('U', True, BLACK), (497, 390))
+                    if event.key == K_i:
+        
+                    if event.key == K_a:
+                        self.keyA = pygame.draw.rect(self.screen, GREY, (120, 450, 60, 60))
+                        self.keyAb = pygame.draw.rect(self.screen, WHITE, (122, 450, 51, 53))
+                        self.screen.blit(self.font.render('A', True, BLACK), (125, 455))
+                    if event.key == K_s:
+                        self.keyS = pygame.draw.rect(self.screen, GREY, (186, 450, 60, 60))
+                        self.keySb = pygame.draw.rect(self.screen, WHITE, (188, 450, 51, 53))
+                        self.screen.blit(self.font.render('S', True, BLACK), (195, 455))
+                    if event.key == K_d:
+                        self.keyD = pygame.draw.rect(self.screen, GREY, (252, 450, 60, 60))
+                        self.keyDb = pygame.draw.rect(self.screen, WHITE, (254, 450, 51, 53))
+                        self.screen.blit(self.font.render('D', True, BLACK), (260, 455))
+                    if event.key ==  K_f:
+                        self.keyF = pygame.draw.rect(self.screen, GREY, (318, 450, 60, 60))
+                        self.keyFb = pygame.draw.rect(self.screen, WHITE, (320, 450, 51, 53))
+                        self.screen.blit(self.font.render('F', True, BLACK), (338, 455))
+                    if event.key == K_g:
+                        self.keyG = pygame.draw.rect(self.screen, GREY, (384, 450, 60, 60))
+                        self.keyGb = pygame.draw.rect(self.screen, WHITE, (386, 450, 51, 53))
+                        self.screen.blit(self.font.render('G', True, BLACK), (400, 455))
+                    if event.key == K_h:
+                        self.keyH = pygame.draw.rect(self.screen, GREY, (450, 450, 60, 60))
+                        self.keyHb = pygame.draw.rect(self.screen, WHITE, (452, 450, 51, 53))
+                        self.screen.blit(self.font.render('H', True, BLACK), (469, 455))
+                    if event.key == K_j:
+                        self.keyJ = pygame.draw.rect(self.screen, GREY, (516, 450, 60, 60))
+                        self.keyJb = pygame.draw.rect(self.screen, WHITE, (518, 450, 51, 53))
+                        self.screen.blit(self.font.render('J', True, BLACK), (533, 455))
+                    if event.key == K_k:
+                        self.keyK = pygame.draw.rect(self.screen, GREY, (582, 450, 60, 60))
+                        self.keyKb = pygame.draw.rect(self.screen, WHITE, (584, 450, 51, 53))
+                        self.screen.blit(self.font.render('K', True, BLACK), (600, 455))
+                    if event.key == K_l:
+                        self.keyL = pygame.draw.rect(self.screen, GREY, (648, 450, 60, 60))
+                        self.keyLb = pygame.draw.rect(self.screen, WHITE, (650, 450, 51, 53))
+                        self.screen.blit(self.font.render('L', True, BLACK), (670, 455))
+                
+                    
+                    
+            pygame.display.update()
+            #pygame.display.flip()
+
+if __name__=='__main__':
+    AI = GAME()
+    AI.run()
